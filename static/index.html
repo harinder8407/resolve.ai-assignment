@@ -1,0 +1,120 @@
+
+
+<!DOCTYPE html>    
+<html>    
+<head>    
+    <title>Register Form</title>
+    <style>
+        body  
+        {  
+            margin: 0;  
+            padding: 0;  
+            background-color:#6abadeba;  
+            font-family: 'Arial';  
+        }  
+    
+        .register{  
+            width: 382px;  
+            overflow: hidden;  
+            margin: auto;  
+            margin: 20 0 0 450px;  
+            padding: 80px;  
+            background: #23463f;  
+            border-radius: 15px ;  
+              
+        } 
+    
+        h2{  
+            text-align: center;  
+            color: #277582;  
+            padding: 20px;  
+        }
+    
+        label{  
+            color: #08ffd1;  
+            font-size: 17px;  
+        } 
+        
+        .name{  
+            width: 300px;  
+            height: 30px;  
+            border: none;  
+            border-radius: 3px;  
+            padding-left: 8px;  
+        }  
+        #email{  
+            width: 300px;  
+            height: 30px;  
+            border: none;  
+            border-radius: 3px;  
+            padding-left: 8px;  
+              
+        } 
+    
+        #register{  
+            width: 300px;  
+            height: 30px;  
+            border: none;  
+            border-radius: 17px;  
+            padding-left: 7px;  
+            color: blue;
+            margin-top: 8px;  
+        }
+    </style> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>    
+<body> 
+    <h2>Register</h2>
+    <div class="register">
+    <form id="reg_form">
+        <div>
+            <label for="first_name">First Name</label>
+            <input type="text" class="name" id="first_name" name="first_name" required>
+        </div>
+        <div>
+            <label for="last_name">Last Name</label>
+            <input type="text" class="name" id="last_name" name="last_name" required>
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <div>
+                <input type="email" id="email" name="email" required>
+            </div>
+        </div>
+        <div>
+            <button type="submit" id="register">Register</button>
+        </div>
+    </form>
+    </div>
+    <script>
+        const form = document.getElementById('reg_form');
+		form.addEventListener('submit', registerUser);
+        async function registerUser(event) {
+            event.preventDefault();
+            $('#register').prop('disabled', true);
+            url = '/register';
+            const result = await fetch(url, {
+                method: 'POST',
+                headers:{
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'first_name' : $('#first_name').val(),
+                    'last_name'  : $('#last_name').val(),
+                    'email'      : $('#email').val()
+                })
+
+            }).then((res) => res.json());
+
+            if (result.status === 'ok') {
+                alert('Success');
+            } else {
+                alert(result.error);
+            }
+            $('#register').prop('disabled', false);
+            $('#reg_form')[0].reset();
+        }
+
+    </script>
+</body>    
+</html> 
